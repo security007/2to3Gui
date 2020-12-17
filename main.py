@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 import subprocess
 import sys
+import re
 
 class Ui(QtWidgets.QMainWindow):
 	def __init__(self):
@@ -25,8 +26,8 @@ class Ui(QtWidgets.QMainWindow):
 		
 	def exect(self):
 		self.x = subprocess.run(["2to3","-w",self.lok],capture_output=True)
-		self.bersih = str(self.x).replace("CompletedProcess","").replace("(","[").replace(")","]")
-		self.debg(self.x)
+		self.bersih = str(self.x).replace("CompletedProcess","").replace("(","[").replace(")","]").split(",")
+		self.debg(self.bersih[5].replace("stderr=b'","").replace("\\n","\n").replace("']",""))
 		opn = open(self.lok,"r")
 		baca = opn.read()
 		self.kode.setText(baca)
